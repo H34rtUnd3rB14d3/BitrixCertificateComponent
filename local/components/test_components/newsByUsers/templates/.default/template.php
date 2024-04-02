@@ -22,7 +22,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 	</table>
 	<?else:?>
 	<div class="ui-alert ui-alert-text-center">
-		<span class="ui-alert-message">Пользователи в этом месяце еще не создавали новостей. test</span>
+		<span class="ui-alert-message">Пользователи в этом месяце еще не создавали новостей.</span>
 	</div>
 	<?endif;?>
 </div>

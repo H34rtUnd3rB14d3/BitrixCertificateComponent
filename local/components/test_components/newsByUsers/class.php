@@ -77,9 +77,10 @@ class MyTopList extends CBitrixComponent
 			}
 			$arResult["NEWS_BY_USER"][$arItem["CREATED_BY"]]["NEWS_AMOUNT"]++;
 		}
+		$usersFilter["ID"] = implode(" | ", $usersFilter["ID"]);
 
 		if (!empty($usersFilter["ID"])) {
-			$rsUsers = CUser::GetList($usersOrder, $usersFilter);
+			$rsUsers = CUser::GetList([], $usersOrder, $usersFilter);
 			$arResult["USER_AMOUNT"] = $rsUsers->SelectedRowsCount();
 			while ($obUser = $rsUsers->GetNext()) {
 				$fullName = $obUser["NAME"] . " " . $obUser["LAST_NAME"];

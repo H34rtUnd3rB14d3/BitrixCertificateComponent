@@ -1,35 +1,30 @@
 <?
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 use Bitrix\Main\Loader;
 
 class MyChecksList extends CBitrixComponent
 {
 	private $IBLOCK_ID = 12;
-	public function executeComponent()
-    {
-        try
-        {
-            $this->checkModules();
-            $this->getResult();
-            $this->includeComponentTemplate();
-        }
-        catch (SystemException $e)
-        {
-            ShowError($e->getMessage());
-        }
-    }
 
-	protected function checkModules()
-    {
-        if (!Loader::includeModule('iblock'))
-            throw new SystemException(Loc::getMessage('CPS_MODULE_NOT_INSTALLED', array('#NAME#' => 'iblock')));
-    }
+	public function executeComponent() {
+		try {
+			$this->checkModules();
+			$this->getResult();
+			$this->includeComponentTemplate();
+		} catch (SystemException $e) {
+			ShowError($e->getMessage());
+		}
+	}
 
-	protected function getResult()
-    {
-        if ($this->errors) {
-            throw new SystemException(current($this->errors));
+	protected function checkModules() {
+		if (!Loader::includeModule('iblock'))
+			throw new SystemException(Loc::getMessage('CPS_MODULE_NOT_INSTALLED', array('#NAME#' => 'iblock')));
+	}
+
+	protected function getResult() {
+		if ($this->errors) {
+			throw new SystemException(current($this->errors));
 		}
 
 		$arResult = [
@@ -92,6 +87,7 @@ class MyChecksList extends CBitrixComponent
 		$arResult["TABLE_HEADERS"] = array_keys(array_values($arResult["CHECKS"])[0]);
 
 		$this->arResult = $arResult;
-    }
+	}
 }
+
 ?>

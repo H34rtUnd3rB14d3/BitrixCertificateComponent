@@ -1,5 +1,5 @@
 <?
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 use Bitrix\Main\Loader;
 
@@ -8,38 +8,32 @@ class MyTopList extends CBitrixComponent
 
 	private const ENTITIES_DEFAULT_AMOUNT = 10;
 
-	public function onPrepareComponentParams($arParams)
-	{
+	public function onPrepareComponentParams($arParams) {
 		$arParams["USER_AMOUNT"] = is_numeric($arParams["USER_AMOUNT"]) ? $arParams["USER_AMOUNT"] : self::ENTITIES_DEFAULT_AMOUNT;
 		return $arParams;
 	}
-	public function executeComponent()
-    {
-        try
-        {
-            $this->checkModules();
-            $this->getResult();
-            $this->includeComponentTemplate();
-        }
-        catch (SystemException $e)
-        {
-            ShowError($e->getMessage());
-        }
-    }
 
-	protected function checkModules()
-    {
-        if (!Loader::includeModule('iblock'))
-            throw new SystemException(Loc::getMessage('CPS_MODULE_NOT_INSTALLED', array('#NAME#' => 'iblock')));
-    }
+	public function executeComponent() {
+		try {
+			$this->checkModules();
+			$this->getResult();
+			$this->includeComponentTemplate();
+		} catch (SystemException $e) {
+			ShowError($e->getMessage());
+		}
+	}
 
-	protected function getResult()
-    {
-        if ($this->errors) {
-            throw new SystemException(current($this->errors));
+	protected function checkModules() {
+		if (!Loader::includeModule('iblock'))
+			throw new SystemException(Loc::getMessage('CPS_MODULE_NOT_INSTALLED', array('#NAME#' => 'iblock')));
+	}
+
+	protected function getResult() {
+		if ($this->errors) {
+			throw new SystemException(current($this->errors));
 		}
 
-        $arParams = $this->arParams;
+		$arParams = $this->arParams;
 		$arResult = [
 			"USER_AMOUNT" => 0,
 		];
@@ -87,13 +81,14 @@ class MyTopList extends CBitrixComponent
 				if (empty($fullName)) $fullName = $obUser["LOGIN"];
 				$arResult["NEWS_BY_USER"][$obUser["ID"]]["NAME"] = $fullName;
 			}
-			uasort($arResult["NEWS_BY_USER"], function($a, $b) {
+			uasort($arResult["NEWS_BY_USER"], function ($a, $b) {
 				if ($a["NEWS_AMOUNT"] == $b["NEWS_AMOUNT"]) return $a["NAME"] > $b["NAME"] ? 1 : 0;
 				return ($a["NEWS_AMOUNT"] < $b["NEWS_AMOUNT"]) ? 1 : -1;
 			});
 			$arResult["NEWS_BY_USER"] = array_slice($arResult["NEWS_BY_USER"], 0, $arParams["USER_AMOUNT"], true);
 		}
 		$this->arResult = $arResult;
-    }
+	}
 }
+
 ?>
